@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Dating App</a>
+
+        <ul class="navbar-nav mr-auto" *ngIf="accountService.currentUser$ | async">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Matches</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Lists</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Messages</a>
+            </li>
+        </ul>
+
+        <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
+            <a class="dropdown-toggle text-light" dropdownToggle>Welcome user</a>
+            <div class="dropdown-menu mt-3" *dropdownMenu>
+                <a class="dropdown-item">Edit Profile</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" (click)="logout()" >Logout</a>
+            </div>
+        </div>
+
+        <form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()" 
+            autocomplete="off">
+            <input 
+                name="username"
+                [(ngModel)]="model.username"
+                class="form-control mr-sm-2" 
+                type="text" 
+                placeholder="Username">
+            <input 
+                name="password"
+                [(ngModel)]="model.password"
+                class="form-control mr-sm-2" 
+                type="password" 
+                placeholder="Password">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+        </form>
+    </div>
+
+</nav>
