@@ -6,8 +6,13 @@
                 <i class="fa fa-user"></i></button></li>
             <li class="list-inline-item"><button (click)="addLike(member)" class="btn btn-primary">
                 <i class="fa fa-heart"></i></button></li>
-            <li class="list-inline-item"><button class="btn btn-primary">
-                <i class="fa fa-envelope"></i></button></li>
+            <li class="list-inline-item">
+                <button 
+                    routerLink='/members/{{member.username}}' 
+                    [queryParams]='{tab: 3}'
+                    class="btn btn-primary">
+                <i class="fa fa-envelope"></i>
+            </button></li>
         </ul>
     </div>
     <div class="card-body p-1">
