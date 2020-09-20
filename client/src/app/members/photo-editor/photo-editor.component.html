@@ -1,9 +1,16 @@
 <div class="row">
-    <div class="col-2" *ngFor="let photo of member.photos">
-        <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1">
+    <div class="col-2 img-wrapper" *ngFor="let photo of member.photos">
+        <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1"
+            [class.not-approved]="!photo.isApproved"
+        >
+
+        <div class="text-center img-text" *ngIf="!photo.isApproved">
+            <span class="text-danger">Awaiting approval</span>
+        </div>
+
         <div class="text-center">
             <button 
-                [disabled]="photo.isMain"
+                [disabled]="photo.isMain || !photo.isApproved"
                 (click)="setMainPhoto(photo)"
                 [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"'
                 class="btn btn-sm"
@@ -62,7 +69,7 @@
         <div>
             <div>
                 Queue progress:
-                <div class="progress" style="">
+                <div class="progress">
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                 </div>
             </div>
