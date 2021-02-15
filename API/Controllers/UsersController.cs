@@ -117,7 +117,9 @@ namespace API.Controllers
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
+            var user = await _unitOfWork.UserRepository.GetUserByPhotoId(photoId);
+
+            if (user.UserName != User.GetUsername()) return Unauthorized("You cannot delete this photo");
 
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
 
