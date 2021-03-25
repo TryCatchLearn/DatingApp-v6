@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
@@ -74,7 +75,7 @@ namespace API.Data
 
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username 
+                "Inbox" => query.Where(u => u.RecipientUsername == messageParams.Username
                     && u.RecipientDeleted == false),
                 "Outbox" => query.Where(u => u.SenderUsername == messageParams.Username
                     && u.SenderDeleted == false),
@@ -86,7 +87,7 @@ namespace API.Data
 
         }
 
-        public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, 
+        public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername,
             string recipientUsername)
         {
             var messages = await _context.Messages
@@ -95,20 +96,10 @@ namespace API.Data
                         || m.Recipient.UserName == recipientUsername
                         && m.Sender.UserName == currentUsername && m.SenderDeleted == false
                 )
+                .MarkUnreadAsRead(currentUsername)
                 .OrderBy(m => m.MessageSent)
                 .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
-
-            var unreadMessages = messages.Where(m => m.DateRead == null 
-                && m.RecipientUsername == currentUsername).ToList();
-
-            if (unreadMessages.Any())
-            {
-                foreach (var message in unreadMessages)
-                {
-                    message.DateRead = DateTime.UtcNow;
-                }
-            }
 
             return messages;
         }
