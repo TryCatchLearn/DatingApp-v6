@@ -1,4 +1,4 @@
-<div class="row mb-4">
+<div class="d-flex mb-4">
     <div class="btn-group" name='container'>
         <button class="btn btn-primary" btnRadio='Unread' [(ngModel)]="container" 
             (click)="loadMessages()">
@@ -21,13 +21,16 @@
 
 <div class="row" *ngIf="messages?.length > 0">
     <table class="table table-hover" style="cursor: pointer">
-        <tr>
-            <th style="width: 40%">Message</th>
-            <th style="width: 20%">From / To</th>
-            <th style="width: 20%">Sent / Received</th>
-            <th style="width: 20%"></th>
-        </tr>
-        <tr [hidden]="loading" *ngFor="let message of messages" 
+        <thead>
+            <tr>
+                <th style="width: 40%">Message</th>
+                <th style="width: 20%">From / To</th>
+                <th style="width: 20%">Sent / Received</th>
+                <th style="width: 20%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr [hidden]="loading" *ngFor="let message of messages" 
             routerLink='{{container === "Outbox" 
                 ? "/members/" + message.recipientUsername 
                 : "/members/" + message.senderUsername}}' [queryParams]='{tab: 3}' >
@@ -35,14 +38,14 @@
             <td>
                 <div *ngIf="container === 'Outbox'">
                     <img 
-                        class="img-circle rounded-circle mr-2"
+                        class="img-circle rounded-circle me-2"
                         src="{{message.recipientPhotoUrl || './assets/user.png'}}" 
                         alt="{{message.recipientUsername}}">
                     <strong>{{message.recipientUsername | titlecase}}</strong>
                 </div> 
                 <div *ngIf="container !== 'Outbox'">
                     <img 
-                        class="img-circle rounded-circle mr-2"
+                        class="img-circle rounded-circle me-2"
                         src="{{message.senderPhotoUrl || './assets/user.png'}}" 
                         alt="{{message.senderUsername}}">
                     <strong>{{message.senderUsername | titlecase}}</strong>
@@ -52,7 +55,9 @@
             <td>
                 <button (click)="$event.stopPropagation()" (click)="deleteMessage(message.id)" class='btn btn-danger'>Delete</button>
             </td>
-        </tr>
+            </tr>
+        </tbody>
+        
     </table>
 </div>
 

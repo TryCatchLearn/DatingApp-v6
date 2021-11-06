@@ -1,17 +1,17 @@
 <div class="row">
-    <div class="col-2" *ngFor="let photo of member.photos">
+    <div class="col-2 d-flex flex-column" *ngFor="let photo of member.photos">
         <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1">
-        <div class="text-center">
+        <div class="d-flex">
             <button 
                 [disabled]="photo.isMain"
                 (click)="setMainPhoto(photo)"
                 [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"'
-                class="btn btn-sm"
+                class="btn btn-sm flex-grow-1"
             >Main</button>
             <button 
                 [disabled]="photo.isMain"
                 (click)="deletePhoto(photo.id)"
-                class="btn btn-sm btn-danger"
+                class="btn btn-sm btn-danger flex-grow-1"
             ><i class="fa fa-trash"></i></button>
         </div>
     </div>
